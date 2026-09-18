@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: oai-solr-search
+
+solr:
+  url: http://localhost:8983/solr
+  core: sbb
+
+oai:
+  base-url: https://digital.staatsbibliothek-berlin.de/oai
+  max-records: 2000

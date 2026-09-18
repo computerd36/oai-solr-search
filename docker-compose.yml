@@ -1,0 +1,12 @@
+services:
+  solr:
+    image: solr:9
+    ports:
+      - "8983:8983"
+    # create solr core on container start
+    command: solr-precreate sbb
+    volumes:
+      - solr-data:/var/solr
+
+volumes:
+  solr-data:
