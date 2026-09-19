@@ -7,5 +7,9 @@ solr:
   core: sbb
 
 oai:
-  base-url: https://digital.staatsbibliothek-berlin.de/oai
+  base-url: https://oai.sbb.berlin/oai
+  set: jean.paul
+  metadata-prefix: oai_dc
   max-records: 2000
+  request-delay: 500ms
+  user-agent: oai-solr-search/0.1
