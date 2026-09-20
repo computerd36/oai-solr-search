@@ -35,6 +35,22 @@
 			<groupId>org.apache.solr</groupId>
 			<artifactId>solr-solrj</artifactId>
 			<version>${solr.version}</version>
+			<!-- solrj pulls jetty 10, boot manages jetty 12, and Http2SolrClient
+			     breaks on the mix. HttpJdkSolrClient needs no jetty at all. -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.jetty.http2</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.jetty.compression</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>

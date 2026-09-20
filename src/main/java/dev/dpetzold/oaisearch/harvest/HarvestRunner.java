@@ -1,7 +1,6 @@
 package dev.dpetzold.oaisearch.harvest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import dev.dpetzold.oaisearch.index.SolrIndexer;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
@@ -9,21 +8,22 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+// harvest profile only, so a normal start does not hit the API
 @Component
 @Profile("harvest")
 class HarvestRunner implements ApplicationRunner {
 
-    private static final Logger log = LoggerFactory.getLogger(HarvestRunner.class);
-
     private final OaiHarvester harvester;
+    private final SolrIndexer indexer;
 
-    HarvestRunner(OaiHarvester harvester) {
+    HarvestRunner(OaiHarvester harvester, SolrIndexer indexer) {
         this.harvester = harvester;
+        this.indexer = indexer;
     }
 
     @Override
     public void run(ApplicationArguments args) {
         List<OaiRecord> records = harvester.harvest();
-        records.stream().findFirst().ifPresent(first -> log.info("first record: {}", first));
+        indexer.index(records);
     }
 }
