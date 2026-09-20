@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,12 +26,19 @@ public class SearchService {
 
     private static final Logger log = LoggerFactory.getLogger(SearchService.class);
 
-    // facet name in the API -> solr field, used for both facet.field and fq
-    static final Map<String, String> FACET_FIELDS = new LinkedHashMap<>(Map.of(
-            "creator", "creator_ss",
-            "subject", "subject_ss",
-            "language", "language_ss",
-            "year", "year_i"));
+    // facet name in the API -> solr field, used for both facet.field and fq.
+    // built by hand because Map.of has no defined iteration order and the
+    // facets should always come back to the client in the same order
+    static final Map<String, String> FACET_FIELDS;
+
+    static {
+        Map<String, String> fields = new LinkedHashMap<>();
+        fields.put("creator", "creator_ss");
+        fields.put("subject", "subject_ss");
+        fields.put("language", "language_ss");
+        fields.put("year", "year_i");
+        FACET_FIELDS = Collections.unmodifiableMap(fields);
+    }
 
     // _txt_de instead of _txt: the corpus is German, text_general does not stem
     private static final String QUERY_FIELDS = "title_txt_de^2 creator_txt_de subject_txt_de";
@@ -94,7 +102,7 @@ public class SearchService {
                     values.add(new SearchResult.FacetValue(count.getName(), count.getCount())));
             facets.put(name, List.copyOf(values));
         });
-        return Map.copyOf(facets);
+        return Collections.unmodifiableMap(facets);
     }
 
     private static SearchResult.Hit toHit(SolrDocument document) {
