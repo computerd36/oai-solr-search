@@ -8,10 +8,15 @@ facettierte Such-API bereit.
 ## Start
 
     docker compose up -d
-    ./mvnw spring-boot:run
+    ./mvnw spring-boot:run -Dspring-boot.run.profiles=harvest
+    cd frontend && npm install && npm run dev
+
+Der zweite Befehl startet die Anwendung und holt einmalig die Daten. Bei
+späteren Starts reicht `./mvnw spring-boot:run` ohne Profil, sonst wird jedes
+Mal neu geharvestet.
 
 Solr läuft dann unter http://localhost:8983 mit dem Core `sbb`, die Anwendung
-unter http://localhost:8080.
+unter http://localhost:8080, die Oberfläche unter http://localhost:5173.
 
 ## Datenquelle
 
@@ -24,10 +29,6 @@ einen Lauf von etwa zwanzig Sekunden. Nach oben begrenzt `oai.max-records`.
 Zwischen zwei Seitenabrufen liegt eine halbe Sekunde Pause, und jede Anfrage
 trägt einen eigenen User-Agent. Die Schnittstelle ist öffentlich und
 unentgeltlich, da blättert man nicht mit voller Geschwindigkeit durch.
-
-Harvest auslösen:
-
-    ./mvnw spring-boot:run -Dspring-boot.run.profiles=harvest
 
 ## Suche
 
@@ -46,4 +47,16 @@ Facette werden mit ODER verknüpft, verschiedene Facetten mit UND.
 
 Die API ist außerdem unter <http://localhost:8080/swagger-ui.html>
 dokumentiert.
+
+## Oberfläche
+
+Eine Seite mit Suchfeld, Facettenspalte und Trefferliste, gebaut mit Vite,
+React und TypeScript. Der Dev-Server proxyt `/api` auf Port 8080, dadurch
+sieht der Browser eine einzige Herkunft und CORS wird kein Thema.
+
+Auf Barrierefreiheit habe ich dabei geachtet: das Suchfeld hat ein echtes
+`<label>` und einen über `aria-describedby` verknüpften Hinweis, die
+Facettengruppen stecken in `<fieldset>` mit `<legend>`, die Trefferzahl liegt
+in einer Region mit `aria-live="polite"`, die Trefferliste ist eine `<ul>`,
+und der Fokus bleibt überall sichtbar.
 
