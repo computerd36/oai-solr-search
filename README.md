@@ -54,9 +54,14 @@ Eine Seite mit Suchfeld, Facettenspalte und Trefferliste, gebaut mit Vite,
 React und TypeScript. Der Dev-Server proxyt `/api` auf Port 8080, dadurch
 sieht der Browser eine einzige Herkunft und CORS wird kein Thema.
 
-Auf Barrierefreiheit habe ich dabei geachtet: das Suchfeld hat ein echtes
+Bewusst schlank: kein State-Management, keine Komponenten- oder
+CSS-Bibliothek, kein Routing. Der Schwerpunkt dieses Prototyps liegt auf
+Harvesting, Indexierung und Such-API. Die Oberfläche ist dazu da, das
+sichtbar und bedienbar zu machen, und nicht mehr. Ein Frontend, das über
+diesen Zweck hinausgeht, würde ich anders schneiden.
+
+Auf Barrierefreiheit habe ich trotzdem geachtet: das Suchfeld hat ein echtes
 `<label>` und einen über `aria-describedby` verknüpften Hinweis, die
 Facettengruppen stecken in `<fieldset>` mit `<legend>`, die Trefferzahl liegt
 in einer Region mit `aria-live="polite"`, die Trefferliste ist eine `<ul>`,
 und der Fokus bleibt überall sichtbar.
-

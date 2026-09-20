@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { search, type Filters, type SearchResult } from './api'
+import type { Filters } from './api'
 import Facets from './components/Facets'
 import Results from './components/Results'
 import SearchField from './components/SearchField'
+import { useSearch } from './useSearch'
 
 const SIZE = 20
 
@@ -12,11 +13,8 @@ export default function App() {
   const [filters, setFilters] = useState<Filters>({})
   const [page, setPage] = useState(0)
 
-  const [result, setResult] = useState<SearchResult | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  // debounce, otherwise every keystroke hits solr
+  // debounce, otherwise every keystroke hits solr. the page reset belongs in
+  // the same update, else the old page fires a request that is aborted again
   useEffect(() => {
     const timer = setTimeout(() => {
       setQuery(input)
@@ -25,22 +23,7 @@ export default function App() {
     return () => clearTimeout(timer)
   }, [input])
 
-  useEffect(() => {
-    const controller = new AbortController()
-    setLoading(true)
-    setError(null)
-
-    search(query, page, SIZE, filters, controller.signal)
-      .then(setResult)
-      .catch((e: unknown) => {
-        if (e instanceof Error && e.name !== 'AbortError') setError(e.message)
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setLoading(false)
-      })
-
-    return () => controller.abort()
-  }, [query, page, filters])
+  const { result, loading, error } = useSearch(query, page, SIZE, filters)
 
   function toggleFilter(facet: string, value: string) {
     setFilters((current) => {
@@ -100,12 +83,12 @@ export default function App() {
       </p>
 
       <div className="layout">
-        <aside>
-          <h2>Filter</h2>
-          {result && (
+        {result && !error && (
+          <aside>
+            <h2>Filter</h2>
             <Facets facets={result.facets} selected={filters} onToggle={toggleFilter} />
-          )}
-        </aside>
+          </aside>
+        )}
 
         <main>
           <h2 className="visually-hidden">Treffer</h2>
