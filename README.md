@@ -28,3 +28,22 @@ unentgeltlich, da blättert man nicht mit voller Geschwindigkeit durch.
 Harvest auslösen:
 
     ./mvnw spring-boot:run -Dspring-boot.run.profiles=harvest
+
+## Suche
+
+`GET /api/search` liefert Treffer und Facetten als JSON. Parameter sind `q` für
+den Freitext, `page` und `size` für die Seitenzahl, und je Facette `creator`,
+`subject`, `language` und `year`. `size` ist auf 100 begrenzt. Filter landen als
+`fq` in der Anfrage und beeinflussen die Bewertung der Treffer nicht.
+
+    curl 'localhost:8080/api/search?q=Teufel&size=3'
+    curl 'localhost:8080/api/search?language=fre'
+    curl 'localhost:8080/api/search?year=1790&creator=Jean+Paul'
+    curl 'localhost:8080/api/search?q=Satire&page=1&size=5'
+
+Die Antwort enthält `total`, `items` und `facets`. Mehrere Werte derselben
+Facette werden mit ODER verknüpft, verschiedene Facetten mit UND.
+
+Die API ist außerdem unter <http://localhost:8080/swagger-ui.html>
+dokumentiert.
+

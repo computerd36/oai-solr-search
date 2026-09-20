@@ -49,7 +49,7 @@ public class SolrIndexer {
         // PPN is the uniqueKey, so a second run overwrites instead of duplicating
         document.addField("id", record.ppn());
 
-        document.addField("title_txt", record.title());
+        document.addField("title_txt_de", record.title());
         document.addField("date_s", record.date());
         document.addField("url_s", record.url());
 
@@ -59,9 +59,9 @@ public class SolrIndexer {
         document.addField("type_ss", record.types());
 
         // _ss is string type, exact match only. Solr 9 ships no copyFields,
-        // so the same values go into a _txt field for search.
-        document.addField("creator_txt", String.join(" ", record.creators()));
-        document.addField("subject_txt", String.join(" ", record.subjects()));
+        // so the same values go into a _txt_de field for search.
+        document.addField("creator_txt_de", String.join(" ", record.creators()));
+        document.addField("subject_txt_de", String.join(" ", record.subjects()));
 
         Integer year = yearOf(record.date());
         if (year != null) {

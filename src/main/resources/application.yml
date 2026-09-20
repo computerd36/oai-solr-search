@@ -1,6 +1,9 @@
 spring:
   application:
     name: oai-solr-search
+  mvc:
+    problemdetails:
+      enabled: true
 
 solr:
   url: http://localhost:8983/solr

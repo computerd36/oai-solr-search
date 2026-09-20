@@ -86,7 +86,7 @@ public class OaiHarvester {
         }
     }
 
-    // public interface, no reason to hammer it
+    // public interface, no reason to hammer it with reqs, dont want to hit rate limits or get blocked
     private void pause() {
         try {
             Thread.sleep(properties.requestDelay());
