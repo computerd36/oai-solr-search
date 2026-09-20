@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/">
+  <responseDate>2026-09-20T10:00:00Z</responseDate>
+  <request verb="ListRecords" metadataPrefix="oai_dc" set="jean.paul">https://oai.sbb.berlin/</request>
+  <ListRecords>
+    <record>
+      <header status="deleted">
+        <identifier>oai:digital.staatsbibliothek-berlin.de:PPN000000001</identifier>
+        <datestamp>2026-01-02T00:00:00Z</datestamp>
+      </header>
+    </record>
+    <record>
+      <header>
+        <identifier>oai:digital.staatsbibliothek-berlin.de:PPN000000002</identifier>
+        <datestamp>2026-01-03T00:00:00Z</datestamp>
+        <setSpec>jean.paul</setSpec>
+      </header>
+      <metadata>
+        <oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+                   xmlns:dc="http://purl.org/dc/elements/1.1/">
+          <dc:title>Ein erhaltener Titel</dc:title>
+          <dc:creator>Jean Paul</dc:creator>
+          <dc:date>1790</dc:date>
+          <dc:language>ger</dc:language>
+          <dc:identifier>PPN000000002</dc:identifier>
+          <dc:identifier>https://resolver.staatsbibliothek-berlin.de/SBB0000000200000000</dc:identifier>
+        </oai_dc:dc>
+      </metadata>
+    </record>
+  </ListRecords>
+</OAI-PMH>
