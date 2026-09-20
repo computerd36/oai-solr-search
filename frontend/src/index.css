@@ -1,0 +1,212 @@
+:root {
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  color: #1a1a1a;
+  background: #fbfbfa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.page {
+  max-width: 62rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+header h1 {
+  margin-bottom: 0.25rem;
+  font-size: 1.6rem;
+}
+
+header p {
+  margin-top: 0;
+  color: #555;
+  max-width: 40rem;
+}
+
+/* a visible focus ring everywhere, the default outline disappears on dark buttons */
+:focus-visible {
+  outline: 3px solid #0b5fff;
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.search-field label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.search-field input {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  font-size: 1rem;
+  border: 1px solid #9a9a9a;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.875rem;
+  color: #555;
+}
+
+.status {
+  margin: 1rem 0 0.5rem;
+  font-weight: 600;
+}
+
+.active-filters {
+  margin-top: 1rem;
+}
+
+.active-filters h2 {
+  font-size: 0.875rem;
+  margin: 0 0 0.35rem;
+}
+
+.active-filters ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+}
+
+.active-filters button {
+  font: inherit;
+  font-size: 0.875rem;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid #0b5fff;
+  border-radius: 999px;
+  background: #eef3ff;
+  color: #0b3ea8;
+  cursor: pointer;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 16rem 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin-top: 1rem;
+}
+
+@media (max-width: 48rem) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+aside h2 {
+  font-size: 1rem;
+}
+
+fieldset {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 0 0 1rem;
+  padding: 0.5rem 0.75rem 0.75rem;
+}
+
+legend {
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0 0.25rem;
+}
+
+.facet-value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.facet-value label {
+  cursor: pointer;
+}
+
+.count {
+  color: #666;
+  font-variant-numeric: tabular-nums;
+}
+
+.results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.results li {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.results h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+}
+
+.results a {
+  color: #0b3ea8;
+}
+
+.results dl {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 0.15rem 0.75rem;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.results dt {
+  color: #555;
+}
+
+.results dd {
+  margin: 0;
+}
+
+.empty {
+  padding: 2rem 0;
+  color: #555;
+}
+
+.paging {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.paging button {
+  font: inherit;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid #9a9a9a;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.paging button:disabled {
+  color: #999;
+  cursor: default;
+}
