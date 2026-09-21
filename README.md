@@ -30,6 +30,12 @@ Zwischen zwei Seitenabrufen liegt eine halbe Sekunde Pause, und jede Anfrage
 trägt einen eigenen User-Agent. Die Schnittstelle ist öffentlich und
 unentgeltlich, da blättert man nicht mit voller Geschwindigkeit durch.
 
+Bei Bedarf kann man das Set ändern, z.B. auf `sbb` mit 1,3 Millionen Datensätzen. 
+Da ich die Schnittstelle aber nicht unnötig für einen Prototypen belasten möchte, 
+habe ich das nicht ausprobiert. Wer es selbst testen möchte, kann das Set in 
+`application-harvest.properties` ändern und die Anwendung mit dem Profil `harvest` 
+starten. Dann dauert das Harvesting entsprechend länger.
+
 ## Suche
 
 `GET /api/search` liefert Treffer und Facetten als JSON. Parameter sind `q` für
@@ -58,10 +64,4 @@ Bewusst schlank: kein State-Management, keine Komponenten- oder
 CSS-Bibliothek, kein Routing. Der Schwerpunkt dieses Prototyps liegt auf
 Harvesting, Indexierung und Such-API. Die Oberfläche ist dazu da, das
 sichtbar und bedienbar zu machen, und nicht mehr. Ein Frontend, das über
-diesen Zweck hinausgeht, würde ich anders schneiden.
-
-Auf Barrierefreiheit habe ich trotzdem geachtet: das Suchfeld hat ein echtes
-`<label>` und einen über `aria-describedby` verknüpften Hinweis, die
-Facettengruppen stecken in `<fieldset>` mit `<legend>`, die Trefferzahl liegt
-in einer Region mit `aria-live="polite"`, die Trefferliste ist eine `<ul>`,
-und der Fokus bleibt überall sichtbar.
+diesen Zweck hinausgeht, würde ich anders gestalten.
