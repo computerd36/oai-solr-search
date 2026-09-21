@@ -20,6 +20,15 @@ Mal neu geharvestet.
 Solr läuft dann unter http://localhost:8983 mit dem Core `sbb`, die Anwendung
 unter http://localhost:8080, die Oberfläche unter http://localhost:5173.
 
+## Architektur
+
+Vier Teile. Der Harvester holt die Datensätze über OAI-PMH und blättert sich
+über `resumptionToken` durch die Seiten. Der Indexer bildet sie auf die
+dynamischen Felder von Solr ab und schreibt sie in Blöcken; Dokument-ID ist die
+PPN, ein zweiter Lauf überschreibt also, statt zu verdoppeln. Die Such-API baut
+daraus eine Solr-Query mit Facetten und gibt Treffer und Zählungen als JSON
+zurück. Das Frontend ist eine Seite darauf.
+
 ## Datenquelle
 
 Die OAI-PMH-Schnittstelle der Digitalisierten Sammlungen liegt unter
@@ -32,18 +41,15 @@ Zwischen zwei Seitenabrufen liegt eine halbe Sekunde Pause, und jede Anfrage
 trägt einen eigenen User-Agent. Die Schnittstelle ist öffentlich und
 unentgeltlich, da blättert man nicht mit voller Geschwindigkeit durch.
 
-Bei Bedarf kann man das Set ändern, z.B. auf `sbb` mit 1,3 Millionen Datensätzen. 
-Da ich die Schnittstelle aber nicht unnötig für einen Prototypen belasten möchte, 
-habe ich das nicht ausprobiert. Wer es selbst testen möchte, kann das Set in 
-`application-harvest.properties` ändern und die Anwendung mit dem Profil `harvest` 
-starten. Dann dauert das Harvesting entsprechend länger.
+Ein anderes Set setzt man über `oai.set` in der `application.yml`. Das größte
+ist `all` mit gut 244.000 Datensätzen; allein die Pausen summieren sich dort auf
+rund vierzig Minuten, deshalb habe ich es nicht laufen lassen.
 
 ## Suche
 
 `GET /api/search` liefert Treffer und Facetten als JSON. Parameter sind `q` für
 den Freitext, `page` und `size` für die Seitenzahl, und je Facette `creator`,
-`subject`, `language` und `year`. `size` ist auf 100 begrenzt. Filter landen als
-`fq` in der Anfrage und beeinflussen die Bewertung der Treffer nicht.
+`subject`, `language` und `year`. `size` ist auf 100 begrenzt.
 
     curl 'localhost:8080/api/search?q=Teufel&size=3'
     curl 'localhost:8080/api/search?language=fre'
@@ -52,6 +58,11 @@ den Freitext, `page` und `size` für die Seitenzahl, und je Facette `creator`,
 
 Die Antwort enthält `total`, `items` und `facets`. Mehrere Werte derselben
 Facette werden mit ODER verknüpft, verschiedene Facetten mit UND.
+
+Filter gehen als `fq` an Solr und nicht in die Suchanfrage selbst. Sie
+entscheiden nur, welche Dokumente überhaupt in Frage kommen, und verschieben die
+Rangfolge nicht. Wer nach Sprache filtert, will die Auswahl einschränken und
+nicht seltene Sprachen nach oben sortiert bekommen.
 
 Die API ist außerdem unter <http://localhost:8080/swagger-ui.html>
 dokumentiert.
@@ -67,3 +78,16 @@ CSS-Bibliothek, kein Routing. Der Schwerpunkt dieses Prototyps liegt auf
 Harvesting, Indexierung und Such-API. Die Oberfläche ist dazu da, das
 sichtbar und bedienbar zu machen, und nicht mehr. Ein Frontend, das über
 diesen Zweck hinausgeht, würde ich anders gestalten.
+
+## Nicht enthalten
+
+- **Keine Authentifizierung**, weder vor der API noch vor dem Harvest. Der
+  Harvest hängt deshalb an einem Profil und nicht an einem offenen Endpunkt.
+- **Keine inkrementelle Aktualisierung.** Jeder Lauf holt das ganze Set.
+  Nachrüsten hieße, den letzten `datestamp` zu merken und als `from` mitzugeben.
+- **Kein eigenes Solr-Schema.** Der Index nutzt die dynamischen Felder des
+  Default-Configsets, was ein doppeltes Ablegen der durchsuchbaren Werte kostet.
+- **Keine Digitalisate.** Verlinkt wird der Resolver aus `dc:identifier`, eine
+  IIIF-Anbindung gibt es nicht.
+- **Kein Deployment.** Läuft lokal über Compose und das Maven-Plugin; für einen
+  Server bräuchte es ein Image und eine Solr-Instanz daneben.
