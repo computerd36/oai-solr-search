@@ -14,8 +14,10 @@ facettierte Such-API bereit.
     cd frontend && npm install && npm run dev
 
 Der zweite Befehl startet die Anwendung und holt einmalig die Daten. Bei
-späteren Starts reicht `./mvnw spring-boot:run` ohne Profil, sonst wird jedes
-Mal neu geharvestet.
+späteren Starts reicht `./mvnw spring-boot:run` ohne profiles=harvest, sonst 
+wird erneut geharvestet.
+
+Der dritte Befehl startet die React-Anwendung, die auf die API zugreift. 
 
 Solr läuft dann unter http://localhost:8983 mit dem Core `sbb`, die Anwendung
 unter http://localhost:8080, die Oberfläche unter http://localhost:5173.
@@ -27,23 +29,22 @@ Vier Teile. Der Harvester holt die Datensätze über OAI-PMH und blättert sich
 dynamischen Felder von Solr ab und schreibt sie in Blöcken; Dokument-ID ist die
 PPN, ein zweiter Lauf überschreibt also, statt zu verdoppeln. Die Such-API baut
 daraus eine Solr-Query mit Facetten und gibt Treffer und Zählungen als JSON
-zurück. Das Frontend ist eine Seite darauf.
+zurück. 
 
 ## Datenquelle
 
 Die OAI-PMH-Schnittstelle der Digitalisierten Sammlungen liegt unter
 <https://oai.sbb.berlin/oai>. Die ältere Adresse unter
-`digital.staatsbibliothek-berlin.de/oai` leitet mit 301 dorthin weiter.
+`digital.staatsbibliothek-berlin.de/oai` leitet dorthin weiter.
 
 Voreingestellt ist das Set `jean.paul` mit 613 Datensätzen, klein genug für
-einen Lauf von etwa zwanzig Sekunden. Nach oben begrenzt `oai.max-records`.
+einen Lauf von etwa zwanzig Sekunden. Nach oben begrenzt via `oai.max-records`.
 Zwischen zwei Seitenabrufen liegt eine halbe Sekunde Pause, und jede Anfrage
-trägt einen eigenen User-Agent. Die Schnittstelle ist öffentlich und
-unentgeltlich, da blättert man nicht mit voller Geschwindigkeit durch.
+trägt einen eigenen User-Agent. 
 
 Ein anderes Set setzt man über `oai.set` in der `application.yml`. Das größte
-ist `all` mit gut 244.000 Datensätzen; allein die Pausen summieren sich dort auf
-rund vierzig Minuten, deshalb habe ich es nicht laufen lassen.
+Set ist `all` mit gut 244.000 Datensätzen; allein die Pausen summieren sich dort auf
+rund vierzig Minuten, was den Endpunkt für diesen Prototyp unnötig belastet. 
 
 ## Suche
 
@@ -71,7 +72,7 @@ dokumentiert.
 
 Eine Seite mit Suchfeld, Facettenspalte und Trefferliste, gebaut mit Vite,
 React und TypeScript. Der Dev-Server proxyt `/api` auf Port 8080, dadurch
-sieht der Browser eine einzige Herkunft und CORS wird kein Thema.
+sieht der Browser eine einzige Herkunft und CORS ist kein Thema. 
 
 Bewusst schlank: kein State-Management, keine Komponenten- oder
 CSS-Bibliothek, kein Routing. Der Schwerpunkt dieses Prototyps liegt auf
