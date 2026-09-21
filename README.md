@@ -1,5 +1,7 @@
 # oai-solr-search
 
+[![build](https://github.com/computerd36/oai-solr-search/actions/workflows/ci.yml/badge.svg)](https://github.com/computerd36/oai-solr-search/actions/workflows/ci.yml)
+
 Suchprototyp für die Metadaten der Digitalisierten Sammlungen der
 Staatsbibliothek zu Berlin. Ich hole die Daten über die offene
 OAI-PMH-Schnittstelle, indexiere sie in Apache Solr und stelle sie über eine
